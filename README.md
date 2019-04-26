@@ -1,5 +1,4 @@
-# FullCalendar
-## FullCalendar plugin for Wordpress</br>
+# FullCalendar Plugin for Wordpress</br>
 
 <img src="https://i.ibb.co/Ltkq7ck/calander.jpg" />
 
@@ -7,7 +6,7 @@
 
 1. Unzip file in your /wp-content/plugins directory.
 2. Activate plugin in wp-admin.
-3. Use shortcode [calander-shortcode] to show calander in page.
+3. Use shortcode [calendar-shortcode] to show calander in page.
 
 ## Changelog
 
