@@ -1,0 +1,46 @@
+function calander_get_user_events($) {
+    
+        $.ajax({    
+            type: 'post',
+            url: get_user_calander_ajax_url,
+            data: {
+                'object_id': null,
+                'action': 'get_user_events'
+            },
+            dataType: 'json',
+            success: function(data){
+                calendar_render($, data)
+            },
+            error: function(errorThrown){
+                //error stuff here.text
+            }
+    });
+
+}
+
+function calendar_render($, data)  {
+
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+        height: 'parent',
+        header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        },
+        defaultView: 'dayGridMonth',
+        defaultDate: '2019-04-12',
+        navLinks: true, // can click day/week names to navigate views
+        editable: true,
+        eventLimit: true, // allow "more" link when too many events
+        events: data
+    });
+
+    calendar.render();      
+}
+
+jQuery(document).ready(function($) {
+    calander_get_user_events($);
+});
