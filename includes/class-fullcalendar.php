@@ -111,7 +111,7 @@ class Fullcalendar {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-fullcalendar-i18n.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/fonctions-fullcalendar.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/cpt-fullcalendar.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/ajax-fullcalendar.php';
 

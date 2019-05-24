@@ -1,6 +1,6 @@
 function calander_get_user_events($) {
     
-        $.ajax({    
+        jQuery.ajax({    
             type: 'post',
             url: get_user_calander_ajax_url,
             data: {
@@ -9,7 +9,8 @@ function calander_get_user_events($) {
             },
             dataType: 'json',
             success: function(data){
-                calendar_render($, data)
+				console.log(data);
+                calendar_render($, data);
             },
             error: function(errorThrown){
                 //error stuff here.text
@@ -31,7 +32,6 @@ function calendar_render($, data)  {
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
         },
         defaultView: 'dayGridMonth',
-        defaultDate: '2019-04-12',
         navLinks: true, // can click day/week names to navigate views
         editable: true,
         eventLimit: true, // allow "more" link when too many events
