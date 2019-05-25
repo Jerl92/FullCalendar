@@ -10,10 +10,17 @@ function calendar_shortcode() { ?>
 
             <label>Title of the event</label>
             <textarea cols="100" id='event-title-textarea' class='form-control'></textarea>
-            <label>Start date of the event</label>
+            <br>
+            <label>Start date and time of the event</label>
+            <br>
             <textarea cols="100" id='event-start-date-textarea' class='form-control' data-toggle='datepicker-start'></textarea>
-            <label>End date of the event</label>
+            <input type="time" id="event-start-time" style="margin: 0;">
+            <br>
+            <label>End date and time of the event</label>
+            <br>
             <textarea cols="100" id='event-end-date-textarea' class='form-control' data-toggle='datepicker-end'></textarea>
+            <input type="time" id="event-end-time" style="margin: 0;">
+            <br>
             <label>Add other users to the event</label>
             <br>
             <?php 

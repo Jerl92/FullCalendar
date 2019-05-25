@@ -122,6 +122,8 @@ class Fullcalendar {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-fullcalendar-admin.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/fullcalendar-admin-display.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.

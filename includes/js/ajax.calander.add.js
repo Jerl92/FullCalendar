@@ -28,13 +28,17 @@ function calander_add_window_user_events($) {
         var end_date = jQuery("#event-end-date-textarea").val();
         var detail = jQuery("#event-detail-textarea").val();
         var users = jQuery("#event-users").val();
-        var event = [title, start_date, end_date, detail, users];
+        var start_time = jQuery("#event-start-time").val();
+        var end_time = jQuery("#event-end-time").val();
+        var event = [title, start_date+'T'+start_time, end_date+'T'+end_time, detail, users];
         calander_add_user_events($, event);
         jQuery("#event-title-textarea").val('');
         jQuery("#event-start-date-textarea").val('');
         jQuery("#event-end-date-textarea").val('');
         jQuery("#event-detail-textarea").val('');
         jQuery("#event-users").val('');
+        jQuery("#event-start-time").val('');
+        jQuery("#event-end-time").val('');
     });
 }
 
