@@ -35,8 +35,15 @@ function get_user_events($posts) {
 			'posts_per_page'	=> -1
 		);
 		$posts = get_posts( $args );
+
 		foreach( $posts as $post ) {
-			$html[] = array('title'=>$post->post_title, 'start'=>$post->post_content);
+			
+			$event_start_date = get_post_meta( $post->ID, '_event_start_date', true);
+
+			$event_end_date = get_post_meta( $post->ID, '_event_end_date', true);
+
+			$html[] = array('title'=>$post->post_title, 'url'=>get_permalink($post->ID), 'start'=>$event_start_date, 'end'=>$event_end_date);
+
 		}
 		return wp_send_json ( $html );
 
@@ -56,13 +63,17 @@ function add_user_events($post) {
 
 		$new_post = array(
 		'post_title' => $data[0],
-		'post_content' => $data[1],
+		'post_content' => $data[3],
 		'post_status' => 'publish',
 		'post_author' => get_current_user_id(),
 		'post_type' => 'events'
 		);
 
 		$post_id = wp_insert_post($new_post);
+
+		add_post_meta( $post_id, '_event_start_date', $data[1] );
+
+		add_post_meta( $post_id, '_event_end_date', $data[2] );
 
 		return wp_send_json ( $post_id );
         

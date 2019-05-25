@@ -24,16 +24,23 @@ function calander_add_user_events($, object_id) {
 function calander_add_window_user_events($) {
     jQuery("#calendar-btn-add-event").click(function($){
         var title = jQuery("#event-title-textarea").val();
-        var date = jQuery("#event-textarea").val();
-        var event = [title, date];
+        var start_date = jQuery("#event-start-date-textarea").val();
+        var end_date = jQuery("#event-end-date-textarea").val();
+        var detail = jQuery("#event-detail-textarea").val();
+        var event = [title, start_date, end_date, detail];
         calander_add_user_events($, event);
+        jQuery("#event-title-textarea").val('');
+        jQuery("#event-start-date-textarea").val('');
+        jQuery("#event-end-date-textarea").val('');
+        jQuery("#event-detail-textarea").val('');
     });
 }
 
+/*
 jQuery(document).ready(function($) {
     jQuery("#calendar-btn-add-event-box").click(function($){
-        jQuery('.calendar-box-add-event').toggleClass('toggle');
-        
+        jQuery('.calendar-box-add-event').toggleClass('toggle');        
         calander_add_window_user_events($);
     });
 });
+*/

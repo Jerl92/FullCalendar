@@ -26,8 +26,17 @@ function calendar_render($, data)  {
     var calendar = new FullCalendar.Calendar(calendarEl, {
         plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
         height: 'parent',
+        customButtons: {
+            AddEventButton: {
+              text: 'Add event',
+              click: function() {
+                jQuery('.calendar-box-add-event').toggleClass('toggle');        
+                calander_add_window_user_events($);
+              }
+            }
+          },
         header: {
-            left: 'prev,next today',
+            left: 'prev,next today AddEventButton',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
         },
@@ -38,7 +47,9 @@ function calendar_render($, data)  {
         events: data
     });
 
-    calendar.render();      
+    if ( calendar ) {
+        calendar.render();
+    }
 }
 
 jQuery(document).ready(function($) {

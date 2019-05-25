@@ -1,6 +1,6 @@
 # FullCalendar Plugin for Wordpress</br>
 
-<img src="https://i.ibb.co/Ltkq7ck/calander.jpg" />
+<img src="https://i.ibb.co/CM4H0WV/calendar.jpg" />
 
 ## Installation
 
@@ -10,8 +10,10 @@
 
 ## Changelog
 
+0.2 - Add button to add your own event to the calendar.
 0.1 - Get events from AJAX.
 
 ## Credits
 
 - https://github.com/fullcalendar/fullcalendar
+- https://github.com/fengyuanchen/datepicker
