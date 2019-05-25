@@ -38,13 +38,39 @@ function get_user_events($posts) {
 
 		foreach( $posts as $post ) {
 			
-			$event_start_date = get_post_meta( $post->ID, '_event_start_date', true);
+			if ( get_current_user_id() == $post->post_author) {
+					
+				$event_start_date = get_post_meta( $post->ID, '_event_start_date', true);
 
-			$event_end_date = get_post_meta( $post->ID, '_event_end_date', true);
+				$event_end_date = get_post_meta( $post->ID, '_event_end_date', true);
 
-			$html[] = array('title'=>$post->post_title, 'url'=>get_permalink($post->ID), 'start'=>$event_start_date, 'end'=>$event_end_date);
+				$html[] = array('title'=>$post->post_title, 'url'=>get_permalink($post->ID), 'start'=>$event_start_date, 'end'=>$event_end_date);
+
+			}
 
 		}
+
+		$user_meta = get_user_meta( get_current_user_id(), '_event_from_other', true);
+
+		if ( $user_meta ) {
+			foreach( $user_meta as $post_id ) {
+
+				$post_user_meta = get_post( $post_id ); 
+
+				if ( get_current_user_id() != $post_user_meta->post_author && $post_user_meta->post_status != 'trash') {
+					
+					$event_start_date = get_post_meta( $post_user_meta->ID, '_event_start_date', true);
+
+					$event_end_date = get_post_meta( $post_user_meta->ID, '_event_end_date', true);
+		
+					$html[] = array('title'=>$post_user_meta->post_title, 'url'=>get_permalink($post_user_meta->ID), 'start'=>$event_start_date, 'end'=>$event_end_date);
+
+				}
+				
+			}
+
+		}
+
 		return wp_send_json ( $html );
 
 	}
@@ -74,6 +100,19 @@ function add_user_events($post) {
 		add_post_meta( $post_id, '_event_start_date', $data[1] );
 
 		add_post_meta( $post_id, '_event_end_date', $data[2] );
+
+		if ($data[4]) {
+			foreach ( $data[4] as $user_id ) {
+				$user_meta = get_user_meta( $user_id, '_event_from_other', true);
+				if (!$user_meta) {
+					add_user_meta( $user_id, '_event_from_other', [$post_id] );
+				} else {
+					array_push( $user_meta, $post_id );
+					update_user_meta( $user_id, '_event_from_other', $user_meta );
+				}
+				
+			}
+		}
 
 		return wp_send_json ( $post_id );
         

@@ -27,12 +27,14 @@ function calander_add_window_user_events($) {
         var start_date = jQuery("#event-start-date-textarea").val();
         var end_date = jQuery("#event-end-date-textarea").val();
         var detail = jQuery("#event-detail-textarea").val();
-        var event = [title, start_date, end_date, detail];
+        var users = jQuery("#event-users").val();
+        var event = [title, start_date, end_date, detail, users];
         calander_add_user_events($, event);
         jQuery("#event-title-textarea").val('');
         jQuery("#event-start-date-textarea").val('');
         jQuery("#event-end-date-textarea").val('');
         jQuery("#event-detail-textarea").val('');
+        jQuery("#event-users").val('');
     });
 }
 

@@ -10,8 +10,8 @@
 
 ## Changelog
 
-0.2 - Add button to add your own event to the calendar.
-0.1 - Get events from AJAX.
+- 0.2 - Add button to add your own event to the calendar.
+- 0.1 - Get events from AJAX.
 
 ## Credits
 

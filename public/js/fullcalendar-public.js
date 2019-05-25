@@ -9,3 +9,7 @@ jQuery(document).ready(function() {
       format: 'yyyy-mm-dd'
     }); 
 });
+
+document.getElementById("calendar-btn-add-event").addEventListener("click", function(event){
+  event.preventDefault();
+});
