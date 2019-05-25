@@ -11,7 +11,6 @@ function calander_add_user_events($, object_id) {
             success: function(data){
             	console.log(object_id);
                 console.log(data);
-                jQuery('#calendar').empty();
                 calander_get_user_events($);
             },
             error: function(errorThrown){
@@ -23,6 +22,7 @@ function calander_add_user_events($, object_id) {
 
 function calander_add_window_user_events($) {
     jQuery("#calendar-btn-add-event").click(function($){
+        jQuery('#calendar').empty();
         var title = jQuery("#event-title-textarea").val();
         var start_date = jQuery("#event-start-date-textarea").val();
         var end_date = jQuery("#event-end-date-textarea").val();

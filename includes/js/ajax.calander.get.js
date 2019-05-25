@@ -9,7 +9,7 @@ function calander_get_user_events($) {
             },
             dataType: 'json',
             success: function(data){
-				console.log(data);
+                console.log(data);
                 calendar_render($, data);
             },
             error: function(errorThrown){
@@ -46,10 +46,7 @@ function calendar_render($, data)  {
         eventLimit: true, // allow "more" link when too many events
         events: data
     });
-
-    if ( calendar ) {
-        calendar.render();
-    }
+    calendar.render();
 }
 
 jQuery(document).ready(function($) {
