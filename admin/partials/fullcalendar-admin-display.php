@@ -17,6 +17,7 @@ function my_edit_events_columns( $columns ) {
     $columns = array(
         'cb' => '<input type="checkbox" />',
         'title' => __( 'Title' ),
+        'author' => __( 'Author' ),
         'others_pepole' => __( 'Others Pepole' ),
         'start_date' => __( 'Start Date' ),
         'end_date' => __( 'End Date' ),
@@ -50,6 +51,10 @@ function my_manage_events_columns( $column, $post_id ) {
 
     switch( $column ) {
 
+        case 'author' :
+            echo the_author();
+        break;
+
         case 'others_pepole' :
             $users = get_users( array( 'fields' => array( 'ID' ) ) );
             foreach($users as $user_id){
@@ -57,7 +62,7 @@ function my_manage_events_columns( $column, $post_id ) {
                 if ( $user_meta ) {
                     foreach( $user_meta as $post_id ) {
                         if ($post_id == $post->ID) {
-                            if ( get_current_user_id() != $user_id->ID ) {
+                            if ( get_current_user_id() != $user_id->ID || get_current_user_id() == $user_id->ID ) {
                                 $data = get_user_meta ( $user_id->ID );
                                 echo $data['first_name'][0];
                                 echo " ";
@@ -80,7 +85,7 @@ function my_manage_events_columns( $column, $post_id ) {
 
         /* Just break out of the switch statement for everything else. */
         default :
-            break;
+        break;
     }
 }
 add_action( 'manage_events_posts_custom_column', 'my_manage_events_columns', 10, 2 );

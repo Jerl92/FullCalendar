@@ -17,6 +17,9 @@
                 <div class="post-content">
                     Details
                     <?php the_content(); ?>
+                    Author :
+                    <?php the_author(); ?>
+                    <br>
                     Other Pepoles :
                     <?php $users = get_users( array( 'fields' => array( 'ID' ) ) );
                     foreach($users as $user_id){
@@ -24,7 +27,7 @@
                         if ( $user_meta ) {
                             foreach( $user_meta as $post_id ) {
                                 if ($post_id == $post->ID) {
-                                    if ( get_current_user_id() != $user_id->ID ) {
+                                    if ( get_current_user_id() != $user_id->ID ||  get_current_user_id() == $user_id->ID ) {
                                         $data = get_user_meta ( $user_id->ID );
                                         echo $data['first_name'][0];
                                         echo " ";
@@ -35,7 +38,6 @@
                             }
                         }
                     } ?>
-                    <br>
                     Date start : 
                     <?php echo $event_start_date; ?>
                     <br>
