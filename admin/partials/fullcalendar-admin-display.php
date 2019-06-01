@@ -36,15 +36,45 @@ wp_nonce_field(basename(__FILE__), "meta-box-nonce");
                 $users = get_users( array( 'fields' => array( 'ID' ) ) );
                 $html[] .= "<select name='event-users[]' id='event-users' multiple>";
                 foreach($users as $user_id){
-                    if ( get_current_user_id() != $user_id->ID ) {
-                        $data = get_user_meta ( $user_id->ID );
-                        $html[] .= "<option value='$user_id->ID'>";
-                        $html[] .= $user_id->ID;
-                        $html[] .= " - ";
-                        $html[] .= $data['first_name'][0];
-                        $html[] .= " ";
-                        $html[] .= $data['last_name'][0];
-                        $html[] .= "</option>";
+                    if ( get_current_user_id() != $user_id->ID ) { 
+                        $user_meta = get_post_meta( $object->ID, '_event_other_user', true);
+                        $i = 0;
+                        if ($user_meta) {
+                            foreach ($user_meta as $user_data) {
+                                if ($user_data == $user_id->ID) {
+                                    $data = get_user_meta ( $user_id->ID );
+                                    $html[] .= "<option selected value='$user_id->ID'>";
+                                    $html[] .= $user_id->ID;
+                                    $html[] .= " - ";
+                                    $html[] .= $data['first_name'][0];
+                                    $html[] .= " ";
+                                    $html[] .= $data['last_name'][0];
+                                    $html[] .= "</option>";
+                                    $i++;
+                                }
+                            }
+                            if ($i == 0){
+                                $data = get_user_meta ( $user_id->ID );
+                                $html[] .= "<option value='$user_id->ID'>";
+                                $html[] .= $user_id->ID;
+                                $html[] .= " - ";
+                                $html[] .= $data['first_name'][0];
+                                $html[] .= " ";
+                                $html[] .= $data['last_name'][0];
+                                $html[] .= "</option>";
+                                $i++;  
+                            }
+                        } elseif ($i == 0){
+                            $data = get_user_meta ( $user_id->ID );
+                            $html[] .= "<option value='$user_id->ID'>";
+                            $html[] .= $user_id->ID;
+                            $html[] .= " - ";
+                            $html[] .= $data['first_name'][0];
+                            $html[] .= " ";
+                            $html[] .= $data['last_name'][0];
+                            $html[] .= "</option>";
+                            $i++; 
+                        }
                     }
                 } 
                 $html[] .= "</select>";
@@ -102,19 +132,27 @@ function save_date_meta_box($post_id, $post, $update) {
 
     $select_user = array_map('intval', $_POST['event-users']);
 
-    if ($_POST['event-users']) {
+    if($_POST['event-users'] != null){
         foreach ( $_POST['event-users'] as $user_id ) {
-            $user_meta = get_user_meta( $user_id, '_event_from_other', true);
-            if (!$user_meta) {
-                add_user_meta( $user_id, '_event_from_other', [$post_id] );
+            $user_meta = get_post_meta( $post_id, '_event_other_user', true );
+            if ($user_meta == null) {
+                add_post_meta( $post_id, '_event_other_user', [$user_id]);
             } else {
-                array_push( $user_meta, $post_id );
-                update_user_meta( $user_id, '_event_from_other', $user_meta );
+                $i = 0;
+                foreach ($user_meta as $user_data) {
+                    if ($user_data == $user_id) {
+                        array_splice($user_meta, $i, 1);
+                    }
+                $i++;
+                }
+                array_push( $user_meta, $user_id );
+                update_post_meta( $post_id, '_event_other_user', $user_meta );
             }
             
         }
+    } else {
+        delete_post_meta( $post_id, '_event_other_user');
     }
-
 }
 add_action("save_post", "save_date_meta_box", 10, 3);
 
@@ -162,23 +200,16 @@ function my_manage_events_columns( $column, $post_id ) {
         break;
 
         case 'others_pepole' :
-            $users = get_users( array( 'fields' => array( 'ID' ) ) );
-            foreach($users as $user_id){
-                $user_meta = get_user_meta( $user_id->ID, '_event_from_other', true);
-                if ( $user_meta ) {
-                    foreach( $user_meta as $post_id ) {
-                        if ($post_id == $post->ID) {
-                            if ( get_current_user_id() != $user_id->ID || get_current_user_id() == $user_id->ID ) {
-                                $data = get_user_meta ( $user_id->ID );
-                                echo $data['first_name'][0];
-                                echo " ";
-                                echo $data['last_name'][0];
-                                echo "<br>";
-                            }
-                        }
-                    }
-                }
+        $users = get_post_meta( $post->ID, '_event_other_user', true );
+        foreach($users as $user_id){
+            if ( get_current_user_id() != $user_id ) {
+                $data = get_user_meta ( $user_id );
+                echo $data['first_name'][0];
+                echo " ";
+                echo $data['last_name'][0];
+                echo "<br>";
             }
+        }
         break;
 
         case 'start_date' :

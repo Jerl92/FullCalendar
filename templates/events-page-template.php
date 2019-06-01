@@ -15,34 +15,44 @@
                     <h1 class="post-title"><?php the_title(); ?></h1>
                 </div>
                 <div class="post-content">
-                    Details
+                    <div class="event_top_wrapper">
+                        <div class="event_top_left">
+                            Details
+                        </div>
+                        <div class="event_top_right">
+                            <a href="<?php echo get_edit_post_link( get_the_ID() ); ?>">Edit Event</a>
+                        </div>
+                    </div>
                     <?php the_content(); ?>
                     Author :
                     <?php the_author(); ?>
                     <br>
                     Other Pepoles :
-                    <?php $users = get_users( array( 'fields' => array( 'ID' ) ) );
+                    <?php $users = get_post_meta( get_the_ID(), '_event_other_user', true );
                     foreach($users as $user_id){
-                        $user_meta = get_user_meta( $user_id->ID, '_event_from_other', true);
-                        if ( $user_meta ) {
-                            foreach( $user_meta as $post_id ) {
-                                if ($post_id == $post->ID) {
-                                    if ( get_current_user_id() != $user_id->ID ||  get_current_user_id() == $user_id->ID ) {
-                                        $data = get_user_meta ( $user_id->ID );
-                                        echo $data['first_name'][0];
-                                        echo " ";
-                                        echo $data['last_name'][0];
-                                        echo "<br>";
-                                    }
-                                }
-                            }
+                        if ( get_current_user_id() != $user_id ) {
+                            $data = get_user_meta ( $user_id );
+                            echo $data['first_name'][0];
+                            echo " ";
+                            echo $data['last_name'][0];
+                            echo "<br>";
                         }
                     } ?>
-                    Date start : 
-                    <?php echo $event_start_date; ?>
                     <br>
-                    Date End :
-                    <?php echo $event_end_date; ?>
+                    <?php $time_start = explode('T', $event_start_date); ?>
+                    Date start and time : 
+                    <br>
+                    <?php echo $time_start[0]; ?>
+                    <br>
+                    <?php echo $time_start[1]; ?>
+                    <?php $time_start = explode('T', $event_end_date); ?>
+                    <br>
+                    <br>
+                    Date End and time :
+                    <br>
+                    <?php echo $time_start[0]; ?>
+                    <br>
+                    <?php echo $time_start[1]; ?>
                 </div>
             </article>
         </div>

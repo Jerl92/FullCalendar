@@ -53,3 +53,14 @@
   border-radius: .25rem;
   transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
+
+.event_top_left {
+  width: 50%;
+  float: left;
+}
+
+.event_top_right {
+  width: 50%;
+  float: right;
+  text-align: right;
+}
