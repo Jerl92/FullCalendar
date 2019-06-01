@@ -29,6 +29,28 @@ wp_nonce_field(basename(__FILE__), "meta-box-nonce");
         <?php $time_end = explode('T', get_post_meta($object->ID, "_event_end_date", true)); ?>
         <input name="event-end-date-textarea" type="text" id="event-end-date-textarea" data-toggle='datepicker-end-admin' value="<?php echo $time_end[0]; ?>" size="30">
         <input name="event-end-time" type="time" id="event-end-time" style="margin: 0;" value="<?php echo $time_end[1]; ?>">
+        <br>
+        <label>Add other users to the event</label>
+            <br>
+            <?php 
+                $users = get_users( array( 'fields' => array( 'ID' ) ) );
+                $html[] .= "<select name='event-users[]' id='event-users' multiple>";
+                foreach($users as $user_id){
+                    if ( get_current_user_id() != $user_id->ID ) {
+                        $data = get_user_meta ( $user_id->ID );
+                        $html[] .= "<option value='$user_id->ID'>";
+                        $html[] .= $user_id->ID;
+                        $html[] .= " - ";
+                        $html[] .= $data['first_name'][0];
+                        $html[] .= " ";
+                        $html[] .= $data['last_name'][0];
+                        $html[] .= "</option>";
+                    }
+                } 
+                $html[] .= "</select>";
+                $arr = implode("", $html);
+                echo $arr;
+            ?>
     </div>
 
 <?php  
@@ -55,11 +77,44 @@ function save_date_meta_box($post_id, $post, $update) {
     if( ! isset( $_POST['event-end-date-textarea'] ) )
     return; 
 
-    $post_time_start = $_POST['event-start-date-textarea'] . 'T' . $_POST['event-start-time'];
-    $post_time_end = $_POST['event-end-date-textarea'] . 'T' . $_POST['event-end-time'];
+    if ( $_POST['event-end-time'] == '' ) {
+        $post_time_start = $_POST['event-start-date-textarea'] . 'T' . $_POST['event-start-time'];
+        $post_time_end = $_POST['event-end-date-textarea'];
+    }
+
+    if ( $_POST['event-start-time'] == '' ) {
+        $post_time_start = $_POST['event-start-date-textarea'];
+        $post_time_end = $_POST['event-end-date-textarea'] . 'T' . $_POST['event-end-time'];
+    } 
+
+    if ( $_POST['event-start-time'] == '' && $_POST['event-end-time'] == '' ) {
+        $post_time_start = $_POST['event-start-date-textarea'];
+        $post_time_end = $_POST['event-end-date-textarea'];
+    }
+
+    if ( $_POST['event-start-time'] != '' && $_POST['event-end-time'] != '' ) {
+        $post_time_start = $_POST['event-start-date-textarea'] . 'T' . $_POST['event-start-time'];
+        $post_time_end = $_POST['event-end-date-textarea'] . 'T' . $_POST['event-end-time'];
+    }
     
     update_post_meta( $post_id, "_event_start_date", $post_time_start );
     update_post_meta( $post_id, "_event_end_date", $post_time_end );
+
+    $select_user = array_map('intval', $_POST['event-users']);
+
+    if ($_POST['event-users']) {
+        foreach ( $_POST['event-users'] as $user_id ) {
+            $user_meta = get_user_meta( $user_id, '_event_from_other', true);
+            if (!$user_meta) {
+                add_user_meta( $user_id, '_event_from_other', [$post_id] );
+            } else {
+                array_push( $user_meta, $post_id );
+                update_user_meta( $user_id, '_event_from_other', $user_meta );
+            }
+            
+        }
+    }
+
 }
 add_action("save_post", "save_date_meta_box", 10, 3);
 

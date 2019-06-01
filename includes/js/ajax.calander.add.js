@@ -30,7 +30,20 @@ function calander_add_window_user_events($) {
         var users = jQuery("#event-users").val();
         var start_time = jQuery("#event-start-time").val();
         var end_time = jQuery("#event-end-time").val();
-        var event = [title, start_date+'T'+start_time, end_date+'T'+end_time, detail, users];
+
+        console.log(start_time);
+        console.log(end_time);
+
+        if ( end_time == '' && start_time == '' ) {
+            var event = [title, start_date, end_date, detail, users];
+        } else if ( end_time == '' ) {
+            var event = [title, start_date, end_date+'T'+end_time, detail, users];
+        } else if ( start_time == '' ) {
+            var event = [title, start_date+'T'+start_time, end_date, detail, users];
+        } else {
+            var event = [title, start_date+'T'+start_time, end_date+'T'+end_time, detail, users];
+        }
+
         calander_add_user_events($, event);
         jQuery("#event-title-textarea").val('');
         jQuery("#event-start-date-textarea").val('');
