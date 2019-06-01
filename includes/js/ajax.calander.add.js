@@ -36,10 +36,10 @@ function calander_add_window_user_events($) {
 
         if ( end_time == '' && start_time == '' ) {
             var event = [title, start_date, end_date, detail, users];
-        } else if ( end_time == '' ) {
-            var event = [title, start_date, end_date+'T'+end_time, detail, users];
-        } else if ( start_time == '' ) {
+        } else if ( end_time == '' && start_time != ''  ) {
             var event = [title, start_date+'T'+start_time, end_date, detail, users];
+        } else if ( start_time == '' && end_time != '') {
+            var event = [title, start_date, end_date+'T'+end_time, detail, users];
         } else {
             var event = [title, start_date+'T'+start_time, end_date+'T'+end_time, detail, users];
         }
