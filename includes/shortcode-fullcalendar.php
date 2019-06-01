@@ -9,7 +9,9 @@ function calendar_shortcode() { ?>
             </div>
 
             <label>Title of the event</label>
+            <br>
             <textarea cols="100" id='event-title-textarea' class='form-control'></textarea>
+            <br>
             <br>
             <label>Start date and time of the event</label>
             <br>
@@ -54,5 +56,4 @@ function calendar_shortcode() { ?>
 <?php }
 
 add_shortcode('calendar-shortcode', 'calendar_shortcode');
-
 ?>

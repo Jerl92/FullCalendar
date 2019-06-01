@@ -20,6 +20,8 @@
 
 .form-control {
   display: block;
+  float: left;
+  max-width: 50%;
   width: 100%;
   height: calc(1.5em + .75rem + 2px);
   padding: .375rem .75rem;
@@ -37,6 +39,7 @@
 
 .form-control-text-area {
   display: block;
+  max-width: 100%;
   width: 100%;
   padding: .375rem .75rem;
   margin: 0;

@@ -19,11 +19,22 @@ function create_posttype_events() {
             'has_archive'           => true,		
             'exclude_from_search'   => false,
             'publicly_queryable'    => true,
-            'capability_type'       => 'page'
+            'supports'      => array( 'title', 'page-attributes', 'editor'),
       )
     );
   }
   add_action( 'init', 'create_posttype_events' );
 
-
+// force use of templates from plugin folder
+function cpte_force_template( $template )
+{	
+	
+	if( is_singular( 'events' ) ) {
+        $template = plugin_dir_path( dirname( __FILE__ ) ) .'/templates/events-page-template.php';
+	}
+	
+  return $template;
+  
+}
+add_filter( 'template_include', 'cpte_force_template' );
 ?>
