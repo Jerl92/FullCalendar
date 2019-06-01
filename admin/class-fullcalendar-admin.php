@@ -73,6 +73,8 @@ class Fullcalendar_Admin {
 		 * class.
 		 */
 
+		wp_enqueue_style( 'datepicker', plugin_dir_url( __FILE__ ) . 'css/datepicker.css', array(), $this->version, 'all' );
+		
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/fullcalendar-admin.css', array(), $this->version, 'all' );
 
 	}
@@ -95,6 +97,9 @@ class Fullcalendar_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
+
+
+		wp_enqueue_script( 'datepicker', plugin_dir_url( __FILE__ ) . 'js/datepicker.js', array( 'jquery' ), $this->version, false );
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/fullcalendar-admin.js', array( 'jquery' ), $this->version, false );
 

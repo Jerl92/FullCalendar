@@ -12,6 +12,57 @@
  * @subpackage Fullcalendar/admin/partials
  */
 
+
+function custom_meta_box_date($object)
+{
+wp_nonce_field(basename(__FILE__), "meta-box-nonce");
+?>
+    <div style="text-align: center;">
+        <label>Start date and time of the event</label>
+        <br>
+        <?php $time_start = explode('T', get_post_meta($object->ID, "_event_start_date", true)); ?>
+        <input name="event-start-date-textarea" type="text" id="event-start-date-textarea" data-toggle='datepicker-start-admin' value="<?php echo $time_start[0]; ?>" size="30">
+        <input name="event-start-time" type="time" id="event-start-time" style="margin: 0;" value="<?php echo $time_start[1]; ?>">
+        <br>
+        <label>End date and time of the event</label>
+        <br>
+        <?php $time_end = explode('T', get_post_meta($object->ID, "_event_end_date", true)); ?>
+        <input name="event-end-date-textarea" type="text" id="event-end-date-textarea" data-toggle='datepicker-end-admin' value="<?php echo $time_end[0]; ?>" size="30">
+        <input name="event-end-time" type="time" id="event-end-time" style="margin: 0;" value="<?php echo $time_end[1]; ?>">
+    </div>
+
+<?php  
+}
+
+function add_date_meta_box()
+{
+    add_meta_box("date-meta-box", "Event date and time", "custom_meta_box_date", "events", "normal", "low", null);
+}
+add_action("add_meta_boxes", "add_date_meta_box");
+
+function save_date_meta_box($post_id, $post, $update) {
+    if (!isset($_POST["meta-box-nonce"]) || !wp_verify_nonce($_POST["meta-box-nonce"], basename(__FILE__)))
+    return $post_id;
+    if(!current_user_can("edit_post", $post_id))
+        return $post_id;
+    if(defined("DOING_AUTOSAVE") && DOING_AUTOSAVE)
+        return $post_id;
+    $slug = "events";
+    if($slug != $post->post_type)
+        return $post_id;
+    if( ! isset( $_POST['event-start-date-textarea'] ) )
+    return; 
+    if( ! isset( $_POST['event-end-date-textarea'] ) )
+    return; 
+
+    $post_time_start = $_POST['event-start-date-textarea'] . 'T' . $_POST['event-start-time'];
+    $post_time_end = $_POST['event-end-date-textarea'] . 'T' . $_POST['event-end-time'];
+    
+    update_post_meta( $post_id, "_event_start_date", $post_time_start );
+    update_post_meta( $post_id, "_event_end_date", $post_time_end );
+}
+add_action("save_post", "save_date_meta_box", 10, 3);
+
 function my_edit_events_columns( $columns ) {
 
     $columns = array(
