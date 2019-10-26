@@ -10,6 +10,7 @@ function calander_get_user_events($) {
             dataType: 'json',
             success: function(data){
                 console.log(data);
+                calendar_widget_render($, data);
                 calendar_render($, data);
             },
             error: function(errorThrown){
@@ -23,8 +24,10 @@ function calendar_render($, data)  {
 
     var calendarEl = document.getElementById('calendar');
 
+    calendarEl.innerHTML = "";
+
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+        plugins: [ 'dayGrid', 'timeGrid', 'list' ],
         height: 'parent',
         customButtons: {
             AddEventButton: {
@@ -47,6 +50,30 @@ function calendar_render($, data)  {
         events: data
     });
     calendar.render();
+}
+
+function calendar_widget_render($, data)  {
+
+    var calendarEl = document.getElementById('calendar-widget');
+
+    calendarEl.innerHTML = "";
+
+    var calendar_widget = new FullCalendar.Calendar(calendarEl, {
+        plugins: [ 'dayGrid', 'timeGrid', 'list' ],
+        height: 'parent',
+        header: {
+            left: 'prev,next today AddEventButton',
+            center: '',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        },
+        defaultView: 'dayGridMonth',
+        navLinks: true, // can click day/week names to navigate views
+        editable: true,
+        eventLimit: true, // allow "more" link when too many events
+        nowIndicator: true,
+        events: data
+    });
+    calendar_widget.render();
 }
 
 jQuery(document).ready(function($) {

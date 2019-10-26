@@ -6055,6 +6055,7 @@ Docs & License: https://fullcalendar.io/
         Toolbar.prototype.render = function (props) {
             this._renderLayout(props.layout);
             this._updateTitle(props.title);
+            jQuery('#calendar-title').html(props.title);            
             this._updateActiveButton(props.activeButton);
             this._updateToday(props.isTodayEnabled);
             this._updatePrev(props.isPrevEnabled);

@@ -27,7 +27,7 @@ function calendar_shortcode() { ?>
             <br>
             <?php 
                 $users = get_users( array( 'fields' => array( 'ID' ) ) );
-                $html[] .= "<select id='event-users' multiple>";
+                $html[] = "<select id='event-users' multiple>";
                 foreach($users as $user_id){
                     if ( get_current_user_id() != $user_id->ID ) {
                         $data = get_user_meta ( $user_id->ID );

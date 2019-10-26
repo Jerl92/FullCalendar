@@ -97,6 +97,7 @@ hr.fc-divider {
   border-collapse: collapse;
   border-spacing: 0;
   font-size: 1em;
+  margin: 0;
   /* normalize cross-browser */ }
 
 .fc th {
