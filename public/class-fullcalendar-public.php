@@ -121,7 +121,9 @@ class Fullcalendar_Public {
 		wp_enqueue_script( 'timegrid', plugin_dir_url( __FILE__ ) . 'js/timegrid/main.js', array( 'jquery' ), $this->version, false );
 
 		wp_enqueue_script( 'datepicker', plugin_dir_url( __FILE__ ) . 'js/datepicker.js', array( 'jquery' ), $this->version, false );
-		
+
+		wp_enqueue_script( 'jscolor', plugin_dir_url( __FILE__ ) . 'js/jscolor.js', array( 'jquery' ), $this->version, false );
+
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/fullcalendar-public.js', array( 'jquery' ), $this->version, false );
 
 	}

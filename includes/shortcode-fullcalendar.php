@@ -23,6 +23,9 @@ function calendar_shortcode() { ?>
             <textarea cols="100" id='event-end-date-textarea' class='form-control' data-toggle='datepicker-end'></textarea>
             <input type="time" id="event-end-time" style="margin: 0;">
             <br>
+            <label>Color of the event</label>
+            <input id="event-color" class="jscolor" value="3788d8">
+            <br>
             <label>Add other users to the event</label>
             <br>
             <?php 

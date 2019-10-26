@@ -44,7 +44,9 @@ function get_user_events($posts) {
 
 				$event_end_date = get_post_meta( $post->ID, '_event_end_date', true);
 
-				$html[] = array('title'=>$post->post_title, 'url'=>get_permalink($post->ID), 'start'=>$event_start_date, 'end'=>$event_end_date);
+				$event_color = get_post_meta( $post->ID, '_event_color', true);
+
+				$html[] = array('title'=>$post->post_title, 'url'=>get_permalink($post->ID), 'start'=>$event_start_date, 'end'=>$event_end_date, 'color'=>$event_color);
 
 			}
 
@@ -57,8 +59,10 @@ function get_user_events($posts) {
 					$event_start_date = get_post_meta( $post->ID, '_event_start_date', true);
 
 					$event_end_date = get_post_meta( $post->ID, '_event_end_date', true);
+
+					$event_color = get_post_meta( $post->ID, '_event_color', true);
 		
-					$html[] = array('title'=>$post->post_title, 'url'=>get_permalink($post->ID), 'start'=>$event_start_date, 'end'=>$event_end_date);
+					$html[] = array('title'=>$post->post_title, 'url'=>get_permalink($post->ID), 'start'=>$event_start_date, 'end'=>$event_end_date, 'color'=>$event_color);
 
 				}
 
@@ -100,6 +104,8 @@ function add_user_events($post) {
 		if ($data[4]) {
 			add_post_meta( $post_id, '_event_other_user', $data[4] );
 		}
+
+		add_post_meta( $post_id, '_event_color', $data[5] );
 
 		return wp_send_json ( $post_id );
         
