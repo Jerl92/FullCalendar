@@ -2,12 +2,9 @@
 
 function calendar_shortcode() { ?>
 
-    <div class='calendar-box-add-event'>
+<?php if ( is_user_logged_in() ) { ?>
+    <div id="calendar-box-add-event" class='calendar-box-add-event'>
         <div class='calendar-box-add-event-wrapper'>
-            <div style="display: table;">
-                <button type="button" id='calendar-btn-add-event' class='fc-event-button fc-button fc-button-primary'>Add event</button>
-            </div>
-
             <label>Title of the event</label>
             <br>
             <textarea cols="100" id='event-title-textarea' class='form-control'></textarea>
@@ -49,12 +46,23 @@ function calendar_shortcode() { ?>
             ?>
             <br>
             <label>Detail of the event</label>
-            <textarea rows="5" cols="100" id='event-detail-textarea' class='form-control-text-area'></textarea>            
+            <textarea rows="5" cols="100" id='event-detail-textarea' class='form-control-text-area'></textarea>     
+            <br>
+            <label>Public event</label>
+            <input type="checkbox" name="public-event" id="public-event" value="1">
+            <div style="display: table;">
+                <button type="button" id='calendar-btn-add-event' class='fc-event-button fc-button fc-button-primary'>Add event</button>
+            </div>
         </div>
     </div>
     <div id='calendar-container'>
         <div id='calendar'></div>
     </div>
+<?php } else { ?>
+    <div id="calendar-container">
+        <div id="calendar-public"></div>
+    </div>
+<?php } ?>
 
 <?php }
 

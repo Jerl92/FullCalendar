@@ -98,6 +98,7 @@ class Fullcalendar_Admin {
 		 * class.
 		 */
 
+		wp_enqueue_script( 'jscolor', plugin_dir_url( __FILE__ ) . 'js/jscolor.js', array( 'jquery' ), $this->version, false );
 
 		wp_enqueue_script( 'datepicker', plugin_dir_url( __FILE__ ) . 'js/datepicker.js', array( 'jquery' ), $this->version, false );
 

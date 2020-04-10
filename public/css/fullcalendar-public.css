@@ -64,3 +64,16 @@
   float: right;
   text-align: right;
 }
+
+.fc-toolbar {
+  width: 100%;
+  display: inline-flex;
+}
+
+#calendar-box-add-eventheader {
+  padding: 10px;
+  cursor: move;
+  z-index: 10;
+  background-color: #2196F3;
+  color: #fff;
+}

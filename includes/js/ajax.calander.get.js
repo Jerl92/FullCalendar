@@ -10,8 +10,9 @@ function calander_get_user_events($) {
             dataType: 'json',
             success: function(data){
                 console.log(data);
-                calendar_widget_render($, data);
                 calendar_render($, data);
+                calendar_widget_render($, data);
+                calendar_render_public($, data);
             },
             error: function(errorThrown){
                 //error stuff here.text
@@ -24,58 +25,129 @@ function calendar_render($, data)  {
 
     var calendarEl = document.getElementById('calendar');
 
-    calendarEl.innerHTML = "";
+    if (calendarEl) {
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: [ 'dayGrid', 'timeGrid', 'list' ],
-        height: 'parent',
-        customButtons: {
-            AddEventButton: {
-              text: 'Add event',
-              click: function() {
-                jQuery('.calendar-box-add-event').toggleClass('toggle');        
-                calander_add_window_user_events($);
-              }
-            }
-          },
-        header: {
-            left: 'prev,next today AddEventButton',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-        },
-        defaultView: 'dayGridMonth',
-        navLinks: true, // can click day/week names to navigate views
-        editable: true,
-        eventLimit: true, // allow "more" link when too many events
-        events: data
-    });
-    calendar.render();
+        calendarEl.innerHTML = "";
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: [ 'dayGrid', 'timeGrid', 'list' ],
+            height: 'parent',
+            customButtons: {
+                AddEventButton: {
+                text: 'Add event',
+                click: function() {
+                    jQuery('.calendar-box-add-event').toggleClass('toggle');
+                }
+                }
+            },
+            header: {
+                left: 'prev,next,today,AddEventButton',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            defaultView: 'dayGridMonth',
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            events: data
+        });
+        calendar.render();
+    }
+}
+
+function calendar_render_public($, data)  {
+
+    var calendarEl = document.getElementById('calendar-public');
+
+    if (calendarEl) {
+
+        calendarEl.innerHTML = "";
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: [ 'dayGrid', 'timeGrid', 'list' ],
+            height: 'parent',
+            header: {
+                left: 'prev,next,today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            defaultView: 'dayGridMonth',
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            events: data
+        });
+        calendar.render();
+
+    }
+
 }
 
 function calendar_widget_render($, data)  {
 
     var calendarEl = document.getElementById('calendar-widget');
 
-    calendarEl.innerHTML = "";
+    if (calendarEl) {
 
-    var calendar_widget = new FullCalendar.Calendar(calendarEl, {
-        plugins: [ 'dayGrid', 'timeGrid', 'list' ],
-        height: 'parent',
-        header: {
-            left: 'prev,next today AddEventButton',
-            center: '',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-        },
-        defaultView: 'dayGridMonth',
-        navLinks: true, // can click day/week names to navigate views
-        editable: true,
-        eventLimit: true, // allow "more" link when too many events
-        nowIndicator: true,
-        events: data
-    });
-    calendar_widget.render();
+        calendarEl.innerHTML = "";
+
+        var calendar_widget = new FullCalendar.Calendar(calendarEl, {
+            plugins: [ 'dayGrid', 'timeGrid', 'list' ],
+            height: 'parent',
+            header: {
+                left: 'prev,next,today',
+                center: '',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            defaultView: 'dayGridMonth',
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            nowIndicator: true,
+            events: data
+        });
+        calendar_widget.render();
+
+    }
+
 }
 
 jQuery(document).ready(function($) {
     calander_get_user_events($);
+    jQuery("#calendar-btn-add-event").click(function($){
+        jQuery('#calendar').empty();
+        var title = jQuery("#event-title-textarea").val();
+        var start_date = jQuery("#event-start-date-textarea").val();
+        var end_date = jQuery("#event-end-date-textarea").val();
+        var detail = jQuery("#event-detail-textarea").val();
+        var users = jQuery("#event-users").val();
+        var start_time = jQuery("#event-start-time").val();
+        var end_time = jQuery("#event-end-time").val();
+        var color = "#"+jQuery("#event-color").val();
+        var public = jQuery("#public-event").val();
+
+        console.log(start_time);
+        console.log(end_time);
+
+        if ( end_time == '' && start_time == '' ) {
+            var event = [title, start_date, end_date, detail, users, color, public];
+        } else if ( end_time == '' && start_time != ''  ) {
+            var event = [title, start_date+'T'+start_time, end_date, detail, users, color, public];
+        } else if ( start_time == '' && end_time != '') {
+            var event = [title, start_date, end_date+'T'+end_time, detail, users, color, public];
+        } else {
+            var event = [title, start_date+'T'+start_time, end_date+'T'+end_time, detail, users, color, public];
+        }
+
+        calander_add_user_events($, event);
+        jQuery("#event-title-textarea").val('');
+        jQuery("#event-start-date-textarea").val('');
+        jQuery("#event-end-date-textarea").val('');
+        jQuery("#event-detail-textarea").val('');
+        jQuery("#event-users").val('');
+        jQuery("#event-start-time").val('');
+        jQuery("#event-end-time").val('');
+        jQuery("#public-event").prop("checked", false);
+        jQuery('.calendar-box-add-event').removeClass('toggle');
+    });
 });

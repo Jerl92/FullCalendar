@@ -30,11 +30,14 @@ wp_nonce_field(basename(__FILE__), "meta-box-nonce");
         <input name="event-end-date-textarea" type="text" id="event-end-date-textarea" data-toggle='datepicker-end-admin' value="<?php echo $time_end[0]; ?>" size="30">
         <input name="event-end-time" type="time" id="event-end-time" style="margin: 0;" value="<?php echo $time_end[1]; ?>">
         <br>
+        <label>Color of the event</label>
+        <input name="event-color" id="event-color" class="jscolor" value="<?php echo get_post_meta( $object->ID, '_event_color', true ) ?>">
+        <br>
         <label>Add other users to the event</label>
             <br>
             <?php 
                 $users = get_users( array( 'fields' => array( 'ID' ) ) );
-                $html[] .= "<select name='event-users[]' id='event-users' multiple>";
+                $html[] = "<select name='event-users[]' id='event-users' multiple>";
                 foreach($users as $user_id){
                     if ( get_current_user_id() != $user_id->ID ) { 
                         $user_meta = get_post_meta( $object->ID, '_event_other_user', true);
@@ -81,6 +84,14 @@ wp_nonce_field(basename(__FILE__), "meta-box-nonce");
                 $arr = implode("", $html);
                 echo $arr;
             ?>
+            <br>
+            <?php $event_public = get_post_meta($object->ID, "_event_public", true); ?>
+            <label>Public event</label>
+            <?php if ($event_public == '1') { ?>
+            <input type="checkbox" name="public-event" id="public-event" value="1" checked>
+            <?php } else { ?>
+            <input type="checkbox" name="public-event" id="public-event" value="1">
+            <?php } ?>
     </div>
 
 <?php  
@@ -153,6 +164,18 @@ function save_date_meta_box($post_id, $post, $update) {
     } else {
         delete_post_meta( $post_id, '_event_other_user');
     }
+
+    if( ! isset( $_POST['event-color'] ) )
+    return; 
+
+    update_post_meta( $post_id, "_event_color", '#'.$_POST['event-color'] );
+
+    if ( $_POST['public-event'] == 1) {
+        update_post_meta( $post_id, "_event_public", '1' );
+    } else {
+        update_post_meta( $post_id, "_event_public", '0' );
+    }
+    
 }
 add_action("save_post", "save_date_meta_box", 10, 3);
 
@@ -165,6 +188,7 @@ function my_edit_events_columns( $columns ) {
         'others_pepole' => __( 'Others Pepole' ),
         'start_date' => __( 'Start Date' ),
         'end_date' => __( 'End Date' ),
+        'color' => __( 'Color' ),
         'date' => __( 'Date' )
     );
 
@@ -218,6 +242,10 @@ function my_manage_events_columns( $column, $post_id ) {
 
         case 'end_date' :
             echo get_post_meta( $post->ID, '_event_end_date', true);
+        break;
+
+        case 'color' :
+            echo '<span style="height: 25px;width: auto;display: block;background-color: ' . get_post_meta( $post->ID, '_event_color', true) .'"></span >';
         break;
 
         /* Just break out of the switch statement for everything else. */
