@@ -117,23 +117,21 @@ function add_user_events($post) {
 
 			add_post_meta( $post_id, '_event_end_date', $data[2] );
 
-			if ($data[4]) {
-				add_post_meta( $post_id, '_event_other_user', $data[4] );
-			}
+			add_post_meta( $post_id, '_event_color', $data[4] );
 
-			add_post_meta( $post_id, '_event_color', $data[5] );
-
-			if ($data[6] == '1') {
+			if ($data[5] == '1') {
 				add_post_meta( $post_id, '_event_public', '1' );
 			} else {
 				add_post_meta( $post_id, '_event_public', '0' );
 			}
+			
+			add_post_meta( $post_id, '_event_other_user', $data[6] );
 
 		} else {
 			return wp_send_json ( null );
 		}
 
-		return wp_send_json ( $post_id );
+		return wp_send_json ( $data );
         
 	} 
 }

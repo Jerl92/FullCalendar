@@ -128,15 +128,16 @@ jQuery(document).ready(function($) {
 
         console.log(start_time);
         console.log(end_time);
+        console.log(color);
 
         if ( end_time == '' && start_time == '' ) {
-            var event = [title, start_date, end_date, detail, users, color, public];
+            var event = [title, start_date, end_date, detail, color, public, users];
         } else if ( end_time == '' && start_time != ''  ) {
-            var event = [title, start_date+'T'+start_time, end_date, detail, users, color, public];
+            var event = [title, start_date+'T'+start_time, end_date, detail, color, public, users];
         } else if ( start_time == '' && end_time != '') {
-            var event = [title, start_date, end_date+'T'+end_time, detail, users, color, public];
+            var event = [title, start_date, end_date+'T'+end_time, detail, color, public, users];
         } else {
-            var event = [title, start_date+'T'+start_time, end_date+'T'+end_time, detail, users, color, public];
+            var event = [title, start_date+'T'+start_time, end_date+'T'+end_time, detail, color, public, users];
         }
 
         calander_add_user_events($, event);
