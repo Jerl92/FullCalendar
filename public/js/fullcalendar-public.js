@@ -14,6 +14,6 @@ document.getElementById("calendar-btn-add-event").addEventListener("click", func
   event.preventDefault();
 });
 
-$( function() {
-  $( "#calendar-box-add-event" ).draggable();
-} );
+jQuery(document).ready(function() {   
+  jQuery( "#calendar-box-add-event" ).draggable();
+});

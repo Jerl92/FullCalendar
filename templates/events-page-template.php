@@ -18,16 +18,12 @@
                     <div class="event_top_wrapper">
                         <?php if ( is_user_logged_in() ) { ?>
                             <div class="event_top_left">
-                                Details
                             </div>
                             <div class="event_top_right">
                                 <a href="<?php echo get_edit_post_link( get_the_ID() ); ?>">Edit Event</a>
                             </div>
-                        <?php } else { ?>
-                            Details
                         <?php } ?>
                     </div>
-                    <?php the_content(); ?>
                     Author :
                     <?php the_author(); ?>
                     <br>
@@ -57,6 +53,9 @@
                     <?php echo $time_start[0]; ?>
                     <br>
                     <?php echo $time_start[1]; ?>
+                    <br>
+                    Details
+                    <?php the_content(); ?>
                 </div>
             </article>
         </div>

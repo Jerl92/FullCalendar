@@ -21,6 +21,7 @@ function calendar_shortcode() { ?>
             <input type="time" id="event-end-time" style="margin: 0;">
             <br>
             <label>Color of the event</label>
+            <br>
             <input id="event-color" class="jscolor" value="3788d8">
             <br>
             <label>Add other users to the event</label>
@@ -49,8 +50,8 @@ function calendar_shortcode() { ?>
             <textarea rows="5" cols="100" id='event-detail-textarea' class='form-control-text-area'></textarea>     
             <br>
             <label>Public event</label>
-            <input type="checkbox" name="public-event" id="public-event" value="1">
-            <div style="display: table;">
+            <input type="checkbox" name="public-event" id="public-event" value="0">
+            <div style="display: table; padding-top: 15px;">
                 <button type="button" id='calendar-btn-add-event' class='fc-event-button fc-button fc-button-primary'>Add event</button>
             </div>
         </div>

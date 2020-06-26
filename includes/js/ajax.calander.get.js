@@ -35,9 +35,9 @@ function calendar_render($, data)  {
             customButtons: {
                 AddEventButton: {
                 text: 'Add event',
-                click: function() {
-                    jQuery('.calendar-box-add-event').toggleClass('toggle');
-                }
+                    click: function() {
+                        jQuery('.calendar-box-add-event').toggleClass('toggle');
+                    }
                 }
             },
             header: {
@@ -115,7 +115,7 @@ function calendar_widget_render($, data)  {
 jQuery(document).ready(function($) {
     calander_get_user_events($);
     jQuery("#calendar-btn-add-event").click(function($){
-        jQuery('#calendar').empty();
+        // jQuery('#calendar').empty();
         var title = jQuery("#event-title-textarea").val();
         var start_date = jQuery("#event-start-date-textarea").val();
         var end_date = jQuery("#event-end-date-textarea").val();

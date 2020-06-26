@@ -917,6 +917,7 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
   }
 
   .calendar-box-add-event {
+    position: absolute !important;
     visibility: hidden;
     display: none;
     width: 50%;    
