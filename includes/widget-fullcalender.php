@@ -38,7 +38,7 @@ class calender_text_widget extends WP_Widget {
                                                 "postid" => get_the_ID()
                                             );
                                         } 
-                                        ?> </div> <?php
+                                        ?><?php
 
                                     // Reset the `$post` data to the current post in main query.
                                         wp_reset_postdata();
@@ -78,81 +78,102 @@ class calender_text_widget extends WP_Widget {
                                             $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
 
                                             $user = wp_get_current_user();
+                                            $other_user = get_post_meta( $post->ID, '_event_other_user', true);
 
                                             if ($now > $eventdate && $now < $eventdateend) {
 
-                                                if (get_post_meta( $post->ID, '_event_public', true) == '0' && get_the_author_meta( 'id' ) == $user->ID) {
+                                                $other_user_loop = 0;
+                                                foreach ( $other_user as $other_user_id ) { 
 
-                                                    if ($i == 0 ) {
-                                                        ?> <span style="height:auto;overflow:auto;"><p style="margin: 0px;">Current Event :</p></span> <?php
-                                                    } ?>
+                                                    if (get_post_meta( $post->ID, '_event_public', true) == '0' && get_the_author_meta( 'id' ) == $user->ID || $other_user_id == $user->ID ) {
 
-                                                    <div>
-                                                        <a href="<?php echo esc_url( get_permalink($post->ID) ); ?>" style="color: <?php echo $event_color ?>"><?php echo $post->post_title ?></a>
-                                                    </div>
-                                                    <span>Event end: 
-                                                        <?php echo date("F j, Y, g:i a", $eventdateend); ?>
-                                                    </span>
-                                                    </br>
-                                                    <span>Day left: 
-                                                        <?php echo sprintf("%d years, %d months, %d days\n", $years, $months, $days); ?>
-                                                    </span>
-                                                    </br></br>
+                                                        if ($other_user_loop == 0) { 
 
-                                                    <?php $i++; ?>
+                                                            if ($i == 0 ) {
+                                                                ?> <span style="height:auto;overflow:auto;"><p style="margin: 0px;">Current Event :</p></span> <?php
+                                                            } ?>
 
-                                                <?php } elseif (get_post_meta( $post->ID, '_event_public', true) == '1') { ?>
+                                                            <div>
+                                                                <a href="<?php echo esc_url( get_permalink($post->ID) ); ?>" style="color: <?php echo $event_color ?>"><?php echo $post->post_title ?></a>
+                                                            </div>
+                                                            <span>Event end: 
+                                                                <?php echo date("F j, Y, g:i a", $eventdateend); ?>
+                                                            </span>
+                                                            </br>
+                                                            <span>Day left: 
+                                                                <?php echo sprintf("%d years, %d months, %d days\n", $years, $months, $days); ?>
+                                                            </span>
+                                                            </br></br>
 
-                                                    <?php if ($i == 0 ) {
-                                                        ?> <span style="height:auto;overflow:auto;"><p style="margin: 0px;">Current Event :</p></span> <?php
-                                                    } ?>
+                                                            <?php $i++; ?>
+                                                            <?php $other_user_loop++; ?>
 
-                                                    <div>
-                                                        <a href="<?php echo esc_url( get_permalink($post->ID) ); ?>" style="color: <?php echo $event_color ?>"><?php echo $post->post_title ?></a>
-                                                    </div>
-                                                    <span>Event end: 
-                                                        <?php echo date("F j, Y, g:i a", $eventdateend); ?>
-                                                    </span>
-                                                    </br>
-                                                    <span>Day left: 
-                                                        <?php echo sprintf("%d years, %d months, %d days\n", $years, $months, $days); ?>
-                                                    </span>
-                                                    </br></br>
+                                                        <?php } ?>
 
-                                                    <?php $i++; ?>
+                                                    <?php } elseif (get_post_meta( $post->ID, '_event_public', true) == '1') { ?>
+
+                                                        <?php if ($i == 0 ) {
+                                                            ?> <span style="height:auto;overflow:auto;"><p style="margin: 0px;">Current Event :</p></span> <?php
+                                                        } ?>
+
+                                                        <div>
+                                                            <a href="<?php echo esc_url( get_permalink($post->ID) ); ?>" style="color: <?php echo $event_color ?>"><?php echo $post->post_title ?></a>
+                                                        </div>
+                                                        <span>Event end: 
+                                                            <?php echo date("F j, Y, g:i a", $eventdateend); ?>
+                                                        </span>
+                                                        </br>
+                                                        <span>Day left: 
+                                                            <?php echo sprintf("%d years, %d months, %d days\n", $years, $months, $days); ?>
+                                                        </span>
+                                                        </br></br>
+
+                                                        <?php $i++; ?>
+
+                                                    <?php } ?>
 
                                                 <?php } ?>
 
                                             <?php } else if ($now < $eventdate) {
 
-                                                if (get_post_meta( $post->ID, '_event_public', true) == '0' && get_the_author_meta( 'id' ) == $user->ID) {
+                                                $other_user_loop = 0;
+                                                foreach ( $other_user as $other_user_id ) { 
 
-                                                    if ($y == 0 ) {
-                                                        ?> <span style="height:auto;"><p style="margin: 0px;">Upcomming Event :</p></span> <?php
-                                                    } ?>
+                                                    if (get_post_meta( $post->ID, '_event_public', true) == '0' && get_the_author_meta( 'id' ) == $user->ID || $other_user_id == $user->ID ) {
 
-                                                    <div>
-                                                        <a href="<?php echo esc_url( get_permalink($post->ID) ); ?>" style="color: <?php echo $event_color ?>"><?php echo $post->post_title ?></a>
-                                                    </div>
-                                                    <?php echo date("F j, Y, g:i a", $eventdate); ?>
-                                                    </br></br>
+                                                        if ($other_user_loop == 0) { 
 
-                                                    <?php $y++; ?>
+                                                            if ($y == 0 ) {
+                                                                ?> <span style="height:auto;"><p style="margin: 0px;">Upcomming Event :</p></span> <?php
+                                                            } ?>
 
-                                                <?php } elseif (get_post_meta( $post->ID, '_event_public', true) == '1') { ?>
+                                                            <div>
+                                                                <a href="<?php echo esc_url( get_permalink($post->ID) ); ?>" style="color: <?php echo $event_color ?>"><?php echo $post->post_title ?></a>
+                                                            </div>
+                                                            <?php echo date("F j, Y, g:i a", $eventdate); ?>
+                                                            </br></br>
+
+                                                            <?php $y++; ?>
+                                                            <?php $other_user_loop++; ?>
+
+                                                        <?php } ?>
+
+                                                    <?php } elseif (get_post_meta( $post->ID, '_event_public', true) == '1') { ?>
+                                                    
+                                                        <?php if ($y == 0 ) {
+                                                            ?> <span style="height:auto;"><p style="margin: 0px;">Upcomming Event :</p></span> <?php
+                                                        } ?>
+
+                                                        <div>
+                                                            <a href="<?php echo esc_url( get_permalink($post->ID) ); ?>" style="color: <?php echo $event_color ?>"><?php echo $post->post_title ?></a>
+                                                        </div>
+                                                        <?php echo date("F j, Y, g:i a", $eventdate); ?>
+                                                        </br></br>
+
+                                                        <?php $y++; ?>
+
+                                                    <?php } ?>
                                                 
-                                                    <?php if ($y == 0 ) {
-                                                        ?> <span style="height:auto;"><p style="margin: 0px;">Upcomming Event :</p></span> <?php
-                                                    } ?>
-
-                                                    <div>
-                                                        <a href="<?php echo esc_url( get_permalink($post->ID) ); ?>" style="color: <?php echo $event_color ?>"><?php echo $post->post_title ?></a>
-                                                    </div>
-                                                    <?php echo date("F j, Y, g:i a", $eventdate); ?>
-                                                    </br></br>
-
-                                                    <?php $y++; ?>
-
                                                 <?php } ?>
 
                                             <?php }

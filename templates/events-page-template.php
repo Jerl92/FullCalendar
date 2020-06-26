@@ -6,6 +6,7 @@
 
     <?php $event_start_date = get_post_meta( get_the_ID(), '_event_start_date', true); ?>
     <?php $event_end_date = get_post_meta( get_the_ID(), '_event_end_date', true); ?>
+    <?php $user = wp_get_current_user(); ?>
 
     <div id="loop-container" class="loop-container">
         <div class="page type-page status-publish hentry entry">
@@ -20,7 +21,9 @@
                             <div class="event_top_left">
                             </div>
                             <div class="event_top_right">
-                                <a href="<?php echo get_edit_post_link( get_the_ID() ); ?>">Edit Event</a>
+                                <?php if (get_the_author_meta( 'id' ) == $user->ID) { ?>
+                                    <a href="<?php echo get_edit_post_link( get_the_ID() ); ?>">Edit Event</a>
+                                <?php } ?>
                             </div>
                         <?php } ?>
                     </div>
