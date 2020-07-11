@@ -115,7 +115,7 @@ class calender_text_widget extends WP_Widget {
 
                                                         <?php } ?>
 
-                                                    <?php } elseif ( get_the_author_meta( 'id' ) == $user->ID && $other_user_id == $user->ID ) {
+                                                    <?php } elseif ( get_the_author_meta( 'id' ) == $user->ID || $other_user_id == $user->ID ) {
 
                                                         if ($other_user_loop == 0) { 
 
@@ -168,7 +168,7 @@ class calender_text_widget extends WP_Widget {
 
                                                         <?php } ?>
 
-                                                    <?php } elseif ( get_the_author_meta( 'id' ) == $user->ID && $other_user_id == $user->ID ) {
+                                                    <?php } elseif ( get_the_author_meta( 'id' ) == $user->ID || $other_user_id == $user->ID ) {
 
                                                         if ($other_user_loop == 0) { 
 
