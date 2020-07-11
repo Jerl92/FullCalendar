@@ -87,10 +87,10 @@ wp_nonce_field(basename(__FILE__), "meta-box-nonce");
             <br>
             <?php $event_public = get_post_meta($object->ID, "_event_public", true); ?>
             <label>Public event</label>
-            <?php if ($event_public == '1') { ?>
-            <input type="checkbox" name="public-event" id="public-event" value="1" checked>
+            <?php if ($event_public == "1") { ?>
+            <input type="checkbox" name="public-event" id="public-event" checked>
             <?php } else { ?>
-            <input type="checkbox" name="public-event" id="public-event" value="0">
+            <input type="checkbox" name="public-event" id="public-event">
             <?php } ?>
     </div>
 
@@ -170,11 +170,13 @@ function save_date_meta_box($post_id, $post, $update) {
 
     update_post_meta( $post_id, "_event_color", '#'.$_POST['event-color'] );
 
-    if ( $_POST['public-event'] == 1) {
-        update_post_meta( $post_id, "_event_public", '1' );
+
+    if ($_POST['public-event'] == "on") {
+        update_post_meta( $post_id, "_event_public", '1');
     } else {
-        update_post_meta( $post_id, "_event_public", '0' );
+        update_post_meta( $post_id, "_event_public", '0');
     }
+
     
 }
 add_action("save_post", "save_date_meta_box", 10, 3);

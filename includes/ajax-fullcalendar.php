@@ -70,7 +70,7 @@ function get_user_events($posts) {
 
 		} else {
 
-			if (get_post_meta( $post->ID, '_event_public', true) == 1) {
+			if (get_post_meta( $post->ID, '_event_public', true) == "1") {
 
 				$event_start_date = get_post_meta( $post->ID, '_event_start_date', true);
 
@@ -119,11 +119,7 @@ function add_user_events($post) {
 
 			add_post_meta( $post_id, '_event_color', $data[4] );
 
-			if ($data[5] == "1") {
-				add_post_meta( $post_id, '_event_public', '1' );
-			} else {
-				add_post_meta( $post_id, '_event_public', '0' );
-			}
+			add_post_meta( $post_id, '_event_public', $data[5] );
 			
 			add_post_meta( $post_id, '_event_other_user', $data[6] );
 

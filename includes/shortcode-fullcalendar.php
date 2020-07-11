@@ -50,7 +50,7 @@ function calendar_shortcode() { ?>
             <textarea rows="5" cols="100" id='event-detail-textarea' class='form-control-text-area'></textarea>     
             <br>
             <label>Public event</label>
-            <input type="checkbox" name="public-event" id="public-event" value="0">
+            <input type="checkbox" name="public-event" id="public-event">
             <div style="display: table; padding-top: 15px;">
                 <button type="button" id='calendar-btn-add-event' class='fc-event-button fc-button fc-button-primary'>Add event</button>
             </div>

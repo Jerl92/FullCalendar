@@ -124,7 +124,12 @@ jQuery(document).ready(function($) {
         var start_time = jQuery("#event-start-time").val();
         var end_time = jQuery("#event-end-time").val();
         var color = "#"+jQuery("#event-color").val();
-        var public = jQuery("#public-event").val();
+
+        if(document.getElementById("public-event").checked) {
+            var public = '1';
+        } else {
+            var public = '0';
+        }
 
         console.log(start_time);
         console.log(end_time);
