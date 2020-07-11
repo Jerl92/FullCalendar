@@ -119,7 +119,7 @@ function add_user_events($post) {
 
 			add_post_meta( $post_id, '_event_color', $data[4] );
 
-			if ($data[5] == '1') {
+			if ($data[5] == "1") {
 				add_post_meta( $post_id, '_event_public', '1' );
 			} else {
 				add_post_meta( $post_id, '_event_public', '0' );

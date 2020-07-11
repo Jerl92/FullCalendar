@@ -90,7 +90,7 @@ wp_nonce_field(basename(__FILE__), "meta-box-nonce");
             <?php if ($event_public == '1') { ?>
             <input type="checkbox" name="public-event" id="public-event" value="1" checked>
             <?php } else { ?>
-            <input type="checkbox" name="public-event" id="public-event" value="1">
+            <input type="checkbox" name="public-event" id="public-event" value="0">
             <?php } ?>
     </div>
 

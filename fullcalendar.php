@@ -9,19 +9,19 @@
  * that starts the plugin.
  *
  * @link              https://jerl92.tk
- * @since             1.0.0
- * @package           Fullcalendar
+ * @since             4.0.0
+ * @package           Full Calendar
  *
  * @wordpress-plugin
  * Plugin Name:       Full Calendar
  * Plugin URI:        https://github.com/Jerl92/fullcalendar
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           1.0.0
+ * Version:           4.0.0
  * Author:            Jérémie Langevin
  * Author URI:        https://jerl92.tk
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       fullcalendar
+ * Text Domain:       Full Calendar
  * Domain Path:       /languages
  */
 
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'FULLCALENDAR_VERSION', '1.0.0' );
+define( 'FULLCALENDAR_VERSION', '4.0.0' );
 
 /**
  * The code that runs during plugin activation.
