@@ -77,3 +77,8 @@
   background-color: #2196F3;
   color: #fff;
 }
+
+.calendar-btn-add-nodification {
+  width: 100%;
+  display: table;
+}

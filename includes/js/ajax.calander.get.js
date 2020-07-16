@@ -130,19 +130,31 @@ jQuery(document).ready(function($) {
         } else {
             var public = '0';
         }
+        
+        var nodification = [];
+        var nodification_length = document.getElementById("nodification-container").getElementsByTagName("li").length;
 
+        var i;
+        for (i = 1; i < nodification_length; i++) {
+            var hour = jQuery("#calendar-btn-add-nodification-time-hour-" + i + "").val();
+            var minute = jQuery("#calendar-btn-add-nodification-time-minute-" + i + "").val();
+            var nodification_time = [hour +':'+ minute, '0'];
+            nodification.push(nodification_time);
+        }
+
+        console.log(nodification);
         console.log(start_time);
         console.log(end_time);
         console.log(color);
 
         if ( end_time == '' && start_time == '' ) {
-            var event = [title, start_date, end_date, detail, color, public, users];
+            var event = [title, start_date, end_date, detail, color, public, users, nodification];
         } else if ( end_time == '' && start_time != ''  ) {
-            var event = [title, start_date+'T'+start_time, end_date, detail, color, public, users];
+            var event = [title, start_date+'T'+start_time, end_date, detail, color, public, users, nodification];
         } else if ( start_time == '' && end_time != '') {
-            var event = [title, start_date, end_date+'T'+end_time, detail, color, public, users];
+            var event = [title, start_date, end_date+'T'+end_time, detail, color, public, users, nodification];
         } else {
-            var event = [title, start_date+'T'+start_time, end_date+'T'+end_time, detail, color, public, users];
+            var event = [title, start_date+'T'+start_time, end_date+'T'+end_time, detail, color, public, users, nodification];
         }
 
         calander_add_user_events($, event);
@@ -155,5 +167,11 @@ jQuery(document).ready(function($) {
         jQuery("#event-end-time").val('');
         jQuery("#public-event").prop("checked", false);
         jQuery('.calendar-box-add-event').removeClass('toggle');
+    });
+
+    jQuery("#calendar-btn-add-nodification").click(function($){
+        event.preventDefault();
+        var length = document.getElementById("nodification-container").getElementsByTagName("li").length;
+        jQuery("#nodification-container").append("<li class='calendar-btn-add-nodification' attr-id=" + length + "><input type='number' id='calendar-btn-add-nodification-time-hour-" + length + "' name='calendar-btn-add-nodification-time-hour-" + length + "' style='margin: 0;float: left;max-width: 25%;' value ='0'/>hours<input type='number' id='calendar-btn-add-nodification-time-minute-" + length + "' name='calendar-btn-add-nodification-time-minute-" + length + "' style='margin: 0;;max-width: 25%;' value ='0'/>minutes</li>");
     });
 });

@@ -62,13 +62,47 @@ $posts = get_posts( $args );
 
 foreach ($posts as $post) {
 
-    $eventdate = strtotime(get_post_meta( $post->ID, '_event_start_date', true));
+    $eventdate = get_post_meta( $post->ID, '_event_start_date', true);
     $eventnodifsend = get_post_meta( $post->ID, '_event_nodif_send', true);
+    $eventnodifs = get_post_meta( $post->ID, '_event_other_nodification');
 
-    if (strtotime(current_time( 'mysql' )) >= $eventdate ) {
+    $i = 0;
+    $y = 0;
+
+    print_r($eventnodifs);
+
+    if ($eventnodifs) {
+        foreach ($eventnodifs as $eventnodif_) {
+            foreach ($eventnodif_ as $eventnodif) {
+
+            $time = $eventnodif[0];
+            $send = $eventnodif[1];
+
+            $date = strtotime( $eventdate . '+' . $time);
+
+            echo   date('H:i:s', strtotime( $eventdate . '+' . $time));
+            echo ' - ';
+
+            if ( $date <= strtotime(current_time( 'mysql' )) && $send === '0' ) {
+                $eventnodifs[$y][$i][1] = 1;
+                nanosupport_email_on_ticket_response($post->ID, '0');
+            } 
+
+            $i++;
+            }
+        $y++;
+        }
+    }
+
+    print_r($eventnodifs);
+
+    // delete_post_meta( $post->ID, '_event_other_nodification' );
+    update_post_meta( $post->ID, '_event_other_nodification', $eventnodifs[0] );
+
+    if (strtotime(current_time( 'mysql' )) >= strtotime($eventdate) ) {
         if ($eventnodifsend == null ) {
-            nanosupport_email_on_ticket_response($post->ID);
-            add_post_meta( $post->ID, '_event_nodif_send', '1' );
+            nanosupport_email_on_ticket_response($post->ID, '1');
+            update_post_meta( $post->ID, '_event_nodif_send', '1' );
         }
     }
 
@@ -76,19 +110,33 @@ foreach ($posts as $post) {
 
 }
 
-function nanosupport_email_on_ticket_response( $post_id ) {
+function nanosupport_email_on_ticket_response( $post_id, $now ) {
 
     $author_id      = get_post_field( 'post_author', $post_id );
     $author_email   = get_the_author_meta( 'user_email', $author_id );
     $event_name     = get_the_title();
 
-    // Don't send email on self-response
-    $subject = sprintf ( esc_html__( 'Your event is now current  — %s', 'nanosupport' ), $event_name );
+    if ($now = '1') {
 
-    $email_subhead = sprintf ( esc_html__( 'Your event is now current — %s', 'nanosupport' ), $event_name );
+        // Don't send email on self-response
+        $subject = sprintf ( esc_html__( '%s - Your event is now current', 'nanosupport' ), $event_name );
 
-    // Email Content
-    $message = 'The event ' . $event_name . ' is now current';
+        $email_subhead = sprintf ( esc_html__( '%s - Your event is now current', 'nanosupport' ), $event_name );
+
+        // Email Content
+        $message = 'The event ' . $event_name . ' is now current';
+
+    } else {
+
+        // Don't send email on self-response
+        $subject = sprintf ( esc_html__( '%s - Your event is starting soon', 'nanosupport' ), $event_name );
+
+        $email_subhead = sprintf ( esc_html__( '%s - Your event is starting soon', 'nanosupport' ), $event_name );
+
+        // Email Content
+        $message = 'The event ' . $event_name . ' is starting soon';
+
+    }
 
     echo $author_email;
 

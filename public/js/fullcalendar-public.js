@@ -10,10 +10,6 @@ jQuery(document).ready(function() {
     }); 
 });
 
-document.getElementById("calendar-btn-add-event").addEventListener("click", function(event){
-  event.preventDefault();
-});
-
 jQuery(document).ready(function() {   
   jQuery( "#calendar-box-add-event" ).draggable();
 });

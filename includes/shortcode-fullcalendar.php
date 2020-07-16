@@ -53,6 +53,13 @@ function calendar_shortcode() { ?>
             <input type="checkbox" name="public-event" id="public-event">
             <div style="display: table; padding-top: 15px;">
                 <button type="button" id='calendar-btn-add-event' class='fc-event-button fc-button fc-button-primary'>Add event</button>
+                <button type="button" id='calendar-btn-add-nodification' class='fc-event-button fc-button fc-button-primary' style="right: 15px; position: absolute;">Add email nodification</button>
+            </div>
+            <div id='nodification-container'>
+                <li class="calendar-btn-add-nodification">
+                    <input type="number" id="calendar-btn-add-nodification-time-hour" name="calendar-btn-add-nodification-time-hour" style="margin: 0;float: left;max-width: 25%;" value ="0"/>hours
+                    <input type="number" id="calendar-btn-add-nodification-time-minute" name="calendar-btn-add-nodification-time-minute" style="margin: 0;;max-width: 25%;" value ="0"/>minutes
+                </li>
             </div>
         </div>
     </div>

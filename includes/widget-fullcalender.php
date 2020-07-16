@@ -27,21 +27,21 @@ class calender_text_widget extends WP_Widget {
                                         'posts_per_page' => -1
                                     );
 
-                                    $my_query = new WP_Query( $args );
+                                    $x = 0;
+                                    $my_query = get_posts( $args );
 
-                                    if ( $my_query->have_posts() ) {
-                                        while ( $my_query->have_posts() ) {
-                                            $my_query->the_post();
-                                            $eventdate = strtotime(get_post_meta( get_the_ID(), '_event_start_date', true));
+                                    if ($my_query) {
+                                        foreach ( $my_query as $post ) { 
+                                            $eventdate = strtotime(get_post_meta( $post->ID, '_event_start_date', true)) + $x;
                                             $data[$eventdate] = array(
-                                                "postid" => get_the_ID()
+                                                "eventdate" => $eventdate,
+                                                "postid" => $post->ID
                                             );
+                                            $x++;
                                         }
-
-                                    // Reset the `$post` data to the current post in main query.
-                                        wp_reset_postdata();
+                                       
                                     }
-
+                                    
                                     ksort($data);  
 
                                     foreach ($data as $event) {
@@ -137,9 +137,9 @@ class calender_text_widget extends WP_Widget {
 
                                                             <?php $i++; ?>
 
-                                                        <?php } ?>
+                                                            <?php $other_user_loop++; ?>
 
-                                                        <?php $other_user_loop++; ?>
+                                                        <?php } ?>
 
                                                     <?php } ?>
 
@@ -184,9 +184,9 @@ class calender_text_widget extends WP_Widget {
 
                                                             <?php $y++; ?>
 
+                                                            <?php $other_user_loop++; ?>
+
                                                         <?php } ?>
-                                                    
-                                                    <?php $other_user_loop++; ?>
 
                                                     <?php } ?>
                                                 

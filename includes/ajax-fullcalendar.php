@@ -123,6 +123,8 @@ function add_user_events($post) {
 			
 			add_post_meta( $post_id, '_event_other_user', $data[6] );
 
+			add_post_meta( $post_id, '_event_other_nodification', $data[7] );
+
 		} else {
 			return wp_send_json ( null );
 		}
