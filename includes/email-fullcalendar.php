@@ -1,7 +1,5 @@
 <?php
 
-include_once('/var/www/jerl92.ca/wp-blog-header.php');
-
 // define the wp_mail_failed callback 
 function action_wp_mail_failed($wp_error) 
 {
@@ -53,70 +51,85 @@ function nanosupport_mail_content_type() {
     return "text/html";
 }
 
-$args = array(
-    'post_type' => 'events',
-    'posts_per_page' => -1
-);
-
-$posts = get_posts( $args );
-
-foreach ($posts as $post) {
-
-    $eventdate = get_post_meta( $post->ID, '_event_start_date', true);
-    $eventnodifsend = get_post_meta( $post->ID, '_event_nodif_send', true);
-    $eventnodifs = get_post_meta( $post->ID, '_event_other_nodification');
-
-    $i = 0;
-    $y = 0;
-
-    print_r($eventnodifs);
-
-    if ($eventnodifs) {
-        foreach ($eventnodifs as $eventnodif_) {
-            foreach ($eventnodif_ as $eventnodif) {
-
-            $time = $eventnodif[0];
-            $send = $eventnodif[1];
-
-            $date = strtotime( $eventdate . '+' . $time);
-
-            echo   date('H:i:s', strtotime( $eventdate . '+' . $time));
-            echo ' - ';
-
-            if ( $date <= strtotime(current_time( 'mysql' )) && $send === '0' ) {
-                $eventnodifs[$y][$i][1] = 1;
-                nanosupport_email_on_ticket_response($post->ID, '0');
-            } 
-
-            $i++;
+function svd_deactivate() {
+    wp_clear_scheduled_hook( 'svd_cron' );
+}
+ 
+add_action('init', function() {
+    add_action( 'svd_cron', 'svd_run_cron' );
+    register_deactivation_hook( __FILE__, 'svd_deactivate' );
+ 
+    if (! wp_next_scheduled ( 'svd_cron' )) {
+        wp_schedule_event( time(), 'every_minute', 'svd_cron' );
+    }
+});
+ 
+function svd_run_cron() {
+    $args = array(
+        'post_type' => 'events',
+        'posts_per_page' => -1
+    );
+    
+    $posts = get_posts( $args );
+    
+    foreach ($posts as $post) {
+    
+        $eventdate = get_post_meta( $post->ID, '_event_start_date', true);
+        $eventnodifsend = get_post_meta( $post->ID, '_event_nodif_send', true);
+        $eventnodifs = get_post_meta( $post->ID, '_event_other_nodification');
+    
+        $i = 0;
+        $y = 0;
+    
+        print_r($eventnodifs);
+    
+        if ($eventnodifs) {
+            foreach ($eventnodifs as $eventnodif_) {
+                foreach ($eventnodif_ as $eventnodif) {
+    
+                $time = $eventnodif[0];
+                $send = $eventnodif[1];
+    
+                $date = strtotime( $eventdate . '+' . $time);
+    
+                echo   date('H:i:s', strtotime( $eventdate . '+' . $time));
+                echo ' - ';
+    
+                if ( $date <= strtotime(current_time( 'mysql' )) && $send === '0' ) {
+                    $eventnodifs[$y][$i][1] = 1;
+                    nanosupport_email_on_ticket_response($post->ID, $time, null);
+                } 
+    
+                $i++;
+                }
+            $y++;
             }
-        $y++;
         }
-    }
-
-    print_r($eventnodifs);
-
-    // delete_post_meta( $post->ID, '_event_other_nodification' );
-    update_post_meta( $post->ID, '_event_other_nodification', $eventnodifs[0] );
-
-    if (strtotime(current_time( 'mysql' )) >= strtotime($eventdate) ) {
-        if ($eventnodifsend == null ) {
-            nanosupport_email_on_ticket_response($post->ID, '1');
-            update_post_meta( $post->ID, '_event_nodif_send', '1' );
+    
+        print_r($eventnodifs);
+    
+        // delete_post_meta( $post->ID, '_event_other_nodification' );
+        update_post_meta( $post->ID, '_event_other_nodification', $eventnodifs[0] );
+    
+        if (strtotime(current_time( 'mysql' )) >= strtotime($eventdate) ) {
+            if ($eventnodifsend == null ) {
+                nanosupport_email_on_ticket_response($post->ID, null, '1');
+                update_post_meta( $post->ID, '_event_nodif_send', '1' );
+            }
         }
+    
+        //delete_post_meta( $post->ID, '_event_nodif_send' );
+    
     }
-
-    //delete_post_meta( $post->ID, '_event_nodif_send' );
-
 }
 
-function nanosupport_email_on_ticket_response( $post_id, $now ) {
+function nanosupport_email_on_ticket_response( $post_id, $time, $now ) {
 
     $author_id      = get_post_field( 'post_author', $post_id );
     $author_email   = get_the_author_meta( 'user_email', $author_id );
-    $event_name     = get_the_title();
+    $event_name     = get_the_title($post_id);
 
-    if ($now = '1') {
+    if ($now = null) {
 
         // Don't send email on self-response
         $subject = sprintf ( esc_html__( '%s - Your event is now current', 'nanosupport' ), $event_name );
@@ -129,12 +142,12 @@ function nanosupport_email_on_ticket_response( $post_id, $now ) {
     } else {
 
         // Don't send email on self-response
-        $subject = sprintf ( esc_html__( '%s - Your event is starting soon', 'nanosupport' ), $event_name );
+        $subject = sprintf ( esc_html__( '%s - Your event is starting in %s', 'nanosupport' ), $event_name, $time );
 
-        $email_subhead = sprintf ( esc_html__( '%s - Your event is starting soon', 'nanosupport' ), $event_name );
+        $email_subhead = sprintf ( esc_html__( '%s - Your event is starting in %s', 'nanosupport' ), $event_name, $time  );
 
         // Email Content
-        $message = 'The event ' . $event_name . ' is starting soon';
+        $message = 'The event ' . $event_name . ' is starting in ' . $time;
 
     }
 
