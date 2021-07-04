@@ -7,7 +7,7 @@ function action_wp_mail_failed($wp_error)
 }
           
 // add the action 
-add_action('wp_mail_failed', 'action_wp_mail_failed', 10, 1);
+// add_action('wp_mail_failed', 'action_wp_mail_failed', 10, 1);
 
 function ns_email( $to_email, $subject, $email_subhead, $message, $reply_to_email = '' ) {
     
@@ -52,19 +52,21 @@ function nanosupport_mail_content_type() {
 }
 
 function svd_deactivate() {
-    wp_clear_scheduled_hook( 'svd_cron' );
+    wp_clear_scheduled_hook( 'check_event' );
 }
  
+/*
 add_action('init', function() {
-    add_action( 'svd_cron', 'svd_run_cron' );
+    add_action( 'check_event', 'check_event_cron' );
     register_deactivation_hook( __FILE__, 'svd_deactivate' );
  
-    if (! wp_next_scheduled ( 'svd_cron' )) {
-        wp_schedule_event( time(), 'every_minute', 'svd_cron' );
+    if (! wp_next_scheduled ( 'check_event' )) {
+        wp_schedule_event( time(), 'every_minute', 'check_event' );
     }
 });
+*/
  
-function svd_run_cron() {
+function check_event_cron() {
     $args = array(
         'post_type' => 'events',
         'posts_per_page' => -1
@@ -113,7 +115,7 @@ function svd_run_cron() {
     
         if (strtotime(current_time( 'mysql' )) >= strtotime($eventdate) ) {
             if ($eventnodifsend == null ) {
-                nanosupport_email_on_ticket_response($post->ID, null, '1');
+                nanosupport_email_on_ticket_response($post->ID, 'now', '1');
                 update_post_meta( $post->ID, '_event_nodif_send', '1' );
             }
         }

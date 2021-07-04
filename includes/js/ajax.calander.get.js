@@ -140,6 +140,7 @@ jQuery(document).ready(function($) {
             var minute = jQuery("#calendar-btn-add-nodification-time-minute-" + i + "").val();
             var nodification_time = [hour +':'+ minute, '0'];
             nodification.push(nodification_time);
+            jQuery(".calendar-btn-add-nodification-" + i + "").remove();
         }
 
         console.log(nodification);
@@ -172,6 +173,6 @@ jQuery(document).ready(function($) {
     jQuery("#calendar-btn-add-nodification").click(function($){
         event.preventDefault();
         var length = document.getElementById("nodification-container").getElementsByTagName("li").length;
-        jQuery("#nodification-container").append("<li class='calendar-btn-add-nodification' attr-id=" + length + "><input type='number' id='calendar-btn-add-nodification-time-hour-" + length + "' name='calendar-btn-add-nodification-time-hour-" + length + "' style='margin: 0;float: left;max-width: 25%;' value ='0'/>hours<input type='number' id='calendar-btn-add-nodification-time-minute-" + length + "' name='calendar-btn-add-nodification-time-minute-" + length + "' style='margin: 0;;max-width: 25%;' value ='0'/>minutes</li>");
+        jQuery("#nodification-container").append("<li class='calendar-btn-add-nodification-" + length + "' style='list-style-type: none;'><input type='number' id='calendar-btn-add-nodification-time-hour-" + length + "' name='calendar-btn-add-nodification-time-hour-" + length + "' style='margin: 0;float: left;max-width: 25%;' value ='0'/>hours<input type='number' id='calendar-btn-add-nodification-time-minute-" + length + "' name='calendar-btn-add-nodification-time-minute-" + length + "' style='margin: 0;;max-width: 25%;' value ='0'/>minutes</li>");
     });
 });

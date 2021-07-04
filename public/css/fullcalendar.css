@@ -921,7 +921,7 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
     visibility: hidden;
     display: none;
     width: 50%;    
-    height: auto;    
+    height: auto !important;    
     background: white;    
     border: .25px solid black;    
     margin: 65px 0 0 0;
