@@ -198,18 +198,6 @@ function my_edit_events_columns( $columns ) {
 }
 add_filter( 'manage_edit-events_columns', 'my_edit_events_columns' ) ;
 
-
-////////////////////////////
-//
-//  Style for admin CPT events colums track
-//  width 50px
-//
-///////////////////////////
-function my_column_width() {
-
-}
-add_action('admin_head', 'my_column_width');
-
 ////////////////////////////
 //
 //  my_manage_events_columns( $column, $post_id )

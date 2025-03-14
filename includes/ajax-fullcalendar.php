@@ -1,12 +1,12 @@
 <?php
 
 /* Enqueue Script */
-add_action( 'wp_enqueue_scripts', 'wp_playlist_ajax_scripts' );
+add_action( 'wp_enqueue_scripts', 'wp_ajax_scripts' );
 
 /**
  * Scripts
  */
-function wp_playlist_ajax_scripts() {
+function wp_ajax_scripts() {
 	/* Plugin DIR URL */
 	$url = trailingslashit( plugin_dir_url( __FILE__ ) );
 	
